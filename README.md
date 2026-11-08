@@ -73,12 +73,12 @@ flowchart TB
 
 ```
 mba-taf/
-├── .github/workflows/taf.yml          # CI/CD: теги, паралелізація, середовища, Allure
-├── Dockerfile                          # запуск TAF у будь-якому CI
+├── .github/workflows/taf.yml
+├── Dockerfile
 ├── pom.xml
 └── src/
     ├── main/java/com/mba/taf/
-    │   ├── core/                       # ── Core / Adaptation Layer
+    │   ├── core/ 
     │   │   ├── config/ConfigManager
     │   │   ├── driver/DriverFactory, DriverManager
     │   │   ├── wait/Waits
@@ -86,20 +86,20 @@ mba-taf/
     │   │   ├── listeners/TestListener, RetryAnalyzer, RetryTransformer
     │   │   ├── report/AllureAttachments, AllureEnvironmentWriter
     │   │   └── util/MoneyParser
-    │   ├── business/                   # ── Business Logic Layer
-    │   │   ├── locators/*Locators      # локатори окремо від методів взаємодії
+    │   ├── business/
+    │   │   ├── locators/*Locators
     │   │   ├── pages/BasePage, HomePage, LoginPage, DashboardPage,
     │   │   │         AccountsPage, TransactionsPage, AdminPage
     │   │   ├── components/NavBar
     │   │   ├── api/BankApiClient, AccountView, OperationResult
     │   │   └── fixtures/AccountFixture
-    │   └── data/                       # ── Test Data Layer
+    │   └── data/
     │       ├── model/  reader/  provider/  factory/
     ├── main/resources/
     │   ├── config/dev.properties, staging.properties, prod.properties
     │   └── logback.xml
     └── test/
-        ├── java/com/mba/taf/tests/     # ── Test Scripts Layer
+        ├── java/com/mba/taf/tests/
         │   ├── base/  smoke/  gui/  api/  defects/
         └── resources/
             ├── testdata/login.json, deposit.json, withdraw.json
