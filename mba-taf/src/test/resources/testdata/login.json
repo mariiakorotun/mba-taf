@@ -1,0 +1,68 @@
+{
+  "description": "Автентифікація користувачів: валідні, межові та невалідні облікові дані",
+  "cases": [
+    {
+      "id": "L-01",
+      "category": "VALID",
+      "username": "${user.username}",
+      "password": "${user.password}",
+      "expected": "SUCCESS",
+      "expectedText": null,
+      "description": "Вхід клієнта з коректними даними"
+    },
+    {
+      "id": "L-02",
+      "category": "VALID",
+      "username": "${admin.username}",
+      "password": "${admin.password}",
+      "expected": "SUCCESS",
+      "expectedText": null,
+      "description": "Вхід адміністратора з коректними даними"
+    },
+    {
+      "id": "L-03",
+      "category": "BOUNDARY",
+      "username": "${user.username}",
+      "password": "uSe%r45",
+      "expected": "ERROR",
+      "expectedText": "Неправильний логін або пароль",
+      "description": "Пароль коротший на 1 символ"
+    },
+    {
+      "id": "L-04",
+      "category": "BOUNDARY",
+      "username": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "password": "Any#Pass1",
+      "expected": "ERROR",
+      "expectedText": "Неправильний логін або пароль",
+      "description": "Логін 51 символ (обмеження колонки — 50)"
+    },
+    {
+      "id": "L-05",
+      "category": "INVALID",
+      "username": "${user.username}",
+      "password": "WrongPass#1",
+      "expected": "ERROR",
+      "expectedText": "Неправильний логін або пароль",
+      "description": "Існуючий логін, неправильний пароль"
+    },
+    {
+      "id": "L-06",
+      "category": "INVALID",
+      "username": "ghost_user_404",
+      "password": "Any#Pass1",
+      "expected": "ERROR",
+      "expectedText": "Неправильний логін або пароль",
+      "description": "Неіснуючий користувач"
+    },
+    {
+      "id": "L-07",
+      "category": "INVALID",
+      "username": "${user.username}",
+      "password": "",
+      "expected": "BLOCKED_BY_UI",
+      "expectedText": null,
+      "description": "Порожній пароль (HTML5 required)"
+    }
+  ]
+}

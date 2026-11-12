@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Відомі дефекти продукту (known-defect)",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*\\[KNOWN-DEFECT\\].*"
+  },
+  {
+    "name": "Дефекти продукту (не виконано assertion)",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Проблеми тесту або середовища (exception, таймаут)",
+    "matchedStatuses": ["broken"]
+  },
+  {
+    "name": "Пропущені тести",
+    "matchedStatuses": ["skipped"]
+  }
+]

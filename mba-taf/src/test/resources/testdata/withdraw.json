@@ -1,0 +1,85 @@
+{
+  "description": "Зняття коштів (через UI). Початковий баланс 500.00",
+  "cases": [
+    {
+      "id": "W-01",
+      "category": "VALID",
+      "initialBalance": "500.00",
+      "amount": "100.00",
+      "expected": "SUCCESS",
+      "expectedBalance": "400.00",
+      "expectedMessage": "Кошти успішно знято!",
+      "description": "Типова сума"
+    },
+    {
+      "id": "W-02",
+      "category": "VALID",
+      "initialBalance": "500.00",
+      "amount": "250.50",
+      "expected": "SUCCESS",
+      "expectedBalance": "249.50",
+      "expectedMessage": "Кошти успішно знято!",
+      "description": "Сума з копійками"
+    },
+    {
+      "id": "W-03",
+      "category": "BOUNDARY",
+      "initialBalance": "500.00",
+      "amount": "500.00",
+      "expected": "SUCCESS",
+      "expectedBalance": "0.00",
+      "expectedMessage": "Кошти успішно знято!",
+      "description": "Зняття всього балансу"
+    },
+    {
+      "id": "W-04",
+      "category": "BOUNDARY",
+      "initialBalance": "500.00",
+      "amount": "500.01",
+      "expected": "ERROR",
+      "expectedBalance": "500.00",
+      "expectedMessage": "Недостатньо коштів на рахунку для зняття",
+      "description": "Баланс + 0.01"
+    },
+    {
+      "id": "W-05",
+      "category": "BOUNDARY",
+      "initialBalance": "500.00",
+      "amount": "0.01",
+      "expected": "SUCCESS",
+      "expectedBalance": "499.99",
+      "expectedMessage": "Кошти успішно знято!",
+      "description": "Мінімальна сума"
+    },
+    {
+      "id": "W-06",
+      "category": "INVALID",
+      "initialBalance": "500.00",
+      "amount": "0",
+      "expected": "BLOCKED_BY_UI",
+      "expectedBalance": "500.00",
+      "expectedMessage": null,
+      "description": "Нуль (HTML5 min=0.01)"
+    },
+    {
+      "id": "W-07",
+      "category": "INVALID",
+      "initialBalance": "500.00",
+      "amount": "-10.00",
+      "expected": "BLOCKED_BY_UI",
+      "expectedBalance": "500.00",
+      "expectedMessage": null,
+      "description": "Від'ємна сума (HTML5 min=0.01)"
+    },
+    {
+      "id": "W-08",
+      "category": "INVALID",
+      "initialBalance": "500.00",
+      "amount": "",
+      "expected": "BLOCKED_BY_UI",
+      "expectedBalance": "500.00",
+      "expectedMessage": null,
+      "description": "Порожнє поле (HTML5 required)"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+<configuration>
+    <property name="PATTERN" value="%d{HH:mm:ss.SSS} %-5level [%thread] [%X{test:-}] %logger{24} - %msg%n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern>${PATTERN}</pattern><charset>UTF-8</charset></encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>target/logs/taf.log</file>
+        <append>false</append>
+        <encoder><pattern>${PATTERN}</pattern><charset>UTF-8</charset></encoder>
+    </appender>
+
+    <!-- «шумні» бібліотеки -->
+    <logger name="org.apache.http" level="WARN"/>
+    <logger name="io.netty" level="WARN"/>
+    <logger name="org.openqa.selenium" level="WARN"/>
+    <logger name="io.github.bonigarcia" level="WARN"/>
+
+    <!-- HTTP=DEBUG показує також параметри форм (паролі та CSRF замасковані) -->
+    <logger name="HTTP" level="INFO"/>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>

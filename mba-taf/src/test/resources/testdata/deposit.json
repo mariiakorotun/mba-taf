@@ -1,0 +1,85 @@
+{
+  "description": "Поповнення рахунку (через HTTP, перевірка серверної валідації). Початковий баланс 0.00",
+  "cases": [
+    {
+      "id": "D-01",
+      "category": "VALID",
+      "initialBalance": "0.00",
+      "amount": "100.00",
+      "expected": "SUCCESS",
+      "expectedBalance": "100.00",
+      "expectedMessage": "Рахунок успішно поповнено!",
+      "description": "Типова сума"
+    },
+    {
+      "id": "D-02",
+      "category": "VALID",
+      "initialBalance": "0.00",
+      "amount": "2500.50",
+      "expected": "SUCCESS",
+      "expectedBalance": "2500.50",
+      "expectedMessage": "Рахунок успішно поповнено!",
+      "description": "Сума з копійками"
+    },
+    {
+      "id": "D-03",
+      "category": "BOUNDARY",
+      "initialBalance": "0.00",
+      "amount": "0.01",
+      "expected": "SUCCESS",
+      "expectedBalance": "0.01",
+      "expectedMessage": "Рахунок успішно поповнено!",
+      "description": "Мінімальна допустима сума"
+    },
+    {
+      "id": "D-04",
+      "category": "BOUNDARY",
+      "initialBalance": "0.00",
+      "amount": "0.00",
+      "expected": "ERROR",
+      "expectedBalance": "0.00",
+      "expectedMessage": "Сума поповнення повинна бути більшою за нуль",
+      "description": "Нуль — найближче недопустиме значення"
+    },
+    {
+      "id": "D-05",
+      "category": "BOUNDARY",
+      "initialBalance": "0.00",
+      "amount": "99999999999999999.99",
+      "expected": "SUCCESS",
+      "expectedBalance": "99999999999999999.99",
+      "expectedMessage": "Рахунок успішно поповнено!",
+      "description": "Максимум DECIMAL(19,2)"
+    },
+    {
+      "id": "D-06",
+      "category": "INVALID",
+      "initialBalance": "0.00",
+      "amount": "-50.00",
+      "expected": "ERROR",
+      "expectedBalance": "0.00",
+      "expectedMessage": "Сума поповнення повинна бути більшою за нуль",
+      "description": "Від'ємна сума"
+    },
+    {
+      "id": "D-07",
+      "category": "INVALID",
+      "initialBalance": "0.00",
+      "amount": "abc",
+      "expected": "BAD_REQUEST",
+      "expectedBalance": "0.00",
+      "expectedMessage": null,
+      "description": "Нечислове значення"
+    },
+    {
+      "id": "D-08",
+      "category": "INVALID",
+      "initialBalance": "0.00",
+      "amount": "",
+      "expected": "BAD_REQUEST",
+      "expectedBalance": "0.00",
+      "expectedMessage": null,
+      "description": "Порожнє значення"
+    }
+  ]
+}
