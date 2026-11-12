@@ -5,8 +5,8 @@ on:
     branches: [ main ]
   pull_request:
   schedule:
-    - cron: "0 4 * * 1-5"          # нічний регрес у будні (07:00 за Києвом)
-  workflow_dispatch:                # ручний запуск з параметрами
+    - cron: "0 4 * * 1-5"
+  workflow_dispatch:
     inputs:
       env:
         description: "Середовище"
@@ -27,6 +27,11 @@ env:
   TAF_GROUPS: ${{ inputs.groups || 'regression' }}
   TAF_THREADS: ${{ inputs.threads || '2' }}
 
+# проєкт TAF лежить у підпапці mba-taf/
+defaults:
+  run:
+    working-directory: mba-taf
+
 jobs:
   test:
     name: "${{ matrix.browser }} | ${{ inputs.env || 'dev' }} | ${{ inputs.groups || 'regression' }}"
@@ -35,26 +40,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        browser: [ chrome, firefox ]   # паралелізація на рівні job: кожен браузер на окремій ВМ
+        browser: [ chrome, firefox ]
 
     steps:
       - name: Checkout TAF
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
           cache: maven
 
-      # ---------- DEV: піднімаємо застосунок на runner з H2 замість Azure SQL ----------
       - name: Checkout SUT (dev only)
         if: env.TAF_ENV == 'dev'
         uses: actions/checkout@v4
         with:
-          repository: ${{ vars.SUT_REPOSITORY }}      # напр. your-login/mini-banking-app
-          token: ${{ secrets.SUT_REPO_TOKEN }}        # PAT з правом читання, якщо репозиторій приватний
+          repository: ${{ vars.SUT_REPOSITORY }}
+          token: ${{ secrets.SUT_REPO_TOKEN }}
           path: sut
 
       - name: Build and start SUT with H2 (dev only)
@@ -78,7 +82,6 @@ jobs:
           done
           echo "SUT did not start"; tail -n 100 "$GITHUB_WORKSPACE/sut.log"; exit 1
 
-      # ---------- запуск тестів ----------
       - name: Run tests
         run: >
           mvn -B test
@@ -92,17 +95,16 @@ jobs:
           MBA_USER_PASSWORD: ${{ secrets.MBA_USER_PASSWORD }}
           MBA_ADMIN_PASSWORD: ${{ secrets.MBA_ADMIN_PASSWORD }}
 
-      # ---------- звіти (виконуються навіть після падіння тестів) ----------
       - name: Generate Allure report
         if: always()
-        run: mvn -B allure:report
+        run: mvn -B io.qameta.allure:allure-maven:2.15.2:report
 
       - name: Upload Allure report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report-${{ matrix.browser }}-${{ env.TAF_ENV }}
-          path: target/site/allure-maven-plugin
+          path: mba-taf/target/site/allure-maven-plugin
           retention-days: 14
 
       - name: Upload logs
@@ -111,7 +113,7 @@ jobs:
         with:
           name: logs-${{ matrix.browser }}-${{ env.TAF_ENV }}
           path: |
-            target/logs/
-            target/surefire-reports/
+            mba-taf/target/logs/
+            mba-taf/target/surefire-reports/
             sut.log
           if-no-files-found: ignore
